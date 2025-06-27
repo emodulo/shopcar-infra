@@ -1,0 +1,80 @@
+services:
+  ms-customer:
+    build:
+      context: ../../ms-customer
+      dockerfile: Dockerfile
+    container_name: ms-customer
+    ports:
+      - "8081:8080"
+    env_file:
+      - ../../ms-customer/.env
+    networks:
+      - shopcar-network
+    depends_on:
+      - mongo
+
+  ms-order:
+    build:
+      context: ../../ms-order
+      dockerfile: Dockerfile
+    container_name: ms-order
+    ports:
+      - "8082:8080"
+    env_file:
+      - ../../ms-order/.env
+    networks:
+      - shopcar-network
+    depends_on:
+      - postgres
+
+  ms-vehicle:
+    build:
+      context: ../../ms-vehicle
+      dockerfile: Dockerfile
+    container_name: ms-vehicle
+    ports:
+      - "8083:8080"
+    env_file:
+      - ../../ms-vehicle/.env
+    networks:
+      - shopcar-network
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:15.1-alpine
+    container_name: db-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: eModulo
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - shopcar-network
+
+  mongo:
+    image: mongo:5.0
+    container_name: db-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - shopcar-network
+
+networks:
+  shopcar-network:
+    driver: bridge
+
+volumes:
+  postgres-data:
+  mongo-data:
