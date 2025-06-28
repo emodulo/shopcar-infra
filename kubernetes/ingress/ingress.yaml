@@ -2,32 +2,29 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: shopcar-ingress
-  annotations:
-    nginx.ingress.kubernetes.io/use-regex: "false"
 spec:
   ingressClassName: nginx
   rules:
-    - host: shopcar.dev
-      http:
-        paths:
-          - path: /api/v1/customers
-            pathType: Prefix
-            backend:
-              service:
-                name: ms-customer-service
-                port:
-                  number: 8081
-          - path: /api/v1/orders
-            pathType: Prefix
-            backend:
-              service:
-                name: ms-order-service
-                port:
-                  number: 8083
-          - path: /api/v1/vehicles
-            pathType: Prefix
-            backend:
-              service:
-                name: ms-vehicle-service
-                port:
-                  number: 8082
+  - http:
+      paths:
+        - path: /api/v1/customers
+          pathType: Prefix
+          backend:
+            service:
+              name: ms-customer-service
+              port:
+                number: 8081
+        - path: /api/v1/vehicles
+          pathType: Prefix
+          backend:
+            service:
+              name: ms-vehicle-service
+              port:
+                number: 8082
+        - path: /api/v1/orders
+          pathType: Prefix
+          backend:
+            service:
+              name: ms-order-service
+              port:
+                number: 8083
