@@ -5,4 +5,4 @@ metadata:
   labels:
     app: mongodb
 data:
-  MONGO_DATABASE: emodulo
+  MONGO_DATABASE: "emodulo"

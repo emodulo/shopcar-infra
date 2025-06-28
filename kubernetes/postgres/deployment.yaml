@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: postgres
+  name: postgres-deployment
 spec:
   replicas: 1
   selector:
@@ -23,9 +23,18 @@ spec:
             - secretRef:
                 name: postgres-secret
           volumeMounts:
-            - mountPath: /var/lib/postgresql/data
-              name: postgres-storage
+            - name: postgres-data
+              mountPath: /var/lib/postgresql/data
+            - name: init-script
+              mountPath: /docker-entrypoint-initdb.d/init.sql
+              subPath: init.sql
       volumes:
-        - name: postgres-storage
+        - name: postgres-data
           persistentVolumeClaim:
             claimName: postgres-pvc
+        - name: init-script
+          configMap:
+            name: postgres-config
+            items:
+              - key: init.sql
+                path: init.sql

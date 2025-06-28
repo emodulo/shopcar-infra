@@ -2,33 +2,32 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: shopcar-ingress
-  namespace: default
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/use-regex: "false"
 spec:
   ingressClassName: nginx
   rules:
     - host: shopcar.dev
       http:
         paths:
-          - pathType: Prefix
-            path: /customer(/|$)(.*)
+          - path: /api/v1/customers
+            pathType: Prefix
             backend:
               service:
-                name: ms-customer
+                name: ms-customer-service
                 port:
-                  number: 8080
-          - pathType: Prefix
-            path: /order(/|$)(.*)
+                  number: 8081
+          - path: /api/v1/orders
+            pathType: Prefix
             backend:
               service:
-                name: ms-order
+                name: ms-order-service
                 port:
-                  number: 8080
-          - pathType: Prefix
-            path: /vehicle(/|$)(.*)
+                  number: 8083
+          - path: /api/v1/vehicles
+            pathType: Prefix
             backend:
               service:
-                name: ms-vehicle
+                name: ms-vehicle-service
                 port:
-                  number: 8080
+                  number: 8082
