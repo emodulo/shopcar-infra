@@ -29,8 +29,8 @@ jobs:
 
       - name: Remover manifests Ingress
         run: |
-          kubectl delete -f kubernetes/ingress/ --ignore-not-found
+          kubectl delete -f kubernetes/ingress/ingress.yaml --ignore-not-found
 
       - name: Remover manifests Metrics
         run: |
-          kubectl delete -f kubernetes/metrics/ --ignore-not-found
+          kubectl delete -f kubernetes/metrics/metrics.yaml --ignore-not-found
