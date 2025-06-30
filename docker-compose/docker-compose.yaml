@@ -61,7 +61,7 @@ services:
     networks:
       - shopcar-network
 
-  mongo:
+  mongo-db:
     image: mongo:5.0
     container_name: db-mongo
     ports:
