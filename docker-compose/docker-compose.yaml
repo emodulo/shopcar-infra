@@ -11,7 +11,7 @@ services:
     networks:
       - shopcar-network
     depends_on:
-      - mongo
+      - mongo-db
 
   ms-order:
     build:
